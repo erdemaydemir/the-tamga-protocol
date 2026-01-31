@@ -10,10 +10,20 @@ signal game_over(reason: String)
 enum TimeOfDay { MORNING, AFTERNOON, EVENING, NIGHT }
 
 var current_time: TimeOfDay = TimeOfDay.MORNING
+var dialogue_ui: CanvasLayer
 
 func _ready():
 	# Connect to EventBus
 	EventBus.day_started.connect(_on_day_started)
+
+	# Load DialogueUI
+	var dialogue_scene = load("res://scenes/ui/dialogue_ui.tscn")
+	if dialogue_scene:
+		dialogue_ui = dialogue_scene.instantiate()
+		add_child(dialogue_ui)
+		print("DialogueUI loaded successfully")
+	else:
+		push_error("Failed to load DialogueUI scene")
 
 	# Start first day
 	start_day()
@@ -41,12 +51,20 @@ func start_day():
 	day_started.emit(day)
 	EventBus.day_started.emit(day)
 
-	# TODO: Load day events
-	# var event_data = load_day_events(day)
-	# process_morning_event(event_data)
+	# Load day events
+	process_day_events(day)
 
 	print("  Health: %d" % GameState.get_stat("health"))
 	print("  Morale: %d" % GameState.get_stat("morale"))
+
+## Process events for specific day
+func process_day_events(day: int):
+	# Day 1: Meet Ali
+	if day == 1:
+		print("  → Loading Day 1 dialogue: meet_ali")
+		# Small delay to let UI load
+		await get_tree().create_timer(0.5).timeout
+		DialogueManager.start_dialogue("day01_meet_ali")
 
 func advance_time():
 	match current_time:
