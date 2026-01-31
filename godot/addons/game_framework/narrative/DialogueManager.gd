@@ -1,5 +1,5 @@
 ## DialogueManager - Manages dialogue display and choices
-## Handles JSON-based dialogue trees
+## Handles JSON-based dialogue trees with branching support
 extends Node
 
 ## Emitted when dialogue starts
@@ -23,6 +23,9 @@ var current_dialogue: Dictionary = {}
 ## Current line index
 var current_line_index: int = 0
 
+## Current branch (if in branched dialogue)
+var current_branch: String = ""
+
 ## Is dialogue active
 var is_active: bool = false
 
@@ -41,6 +44,7 @@ func start_dialogue(dialogue_path: String) -> bool:
 
 	current_dialogue = dialogue_data
 	current_line_index = 0
+	current_branch = ""
 	is_active = true
 
 	dialogue_started.emit(dialogue_path)
@@ -58,10 +62,17 @@ func next_line() -> void:
 
 	current_line_index += 1
 
-	# Check if dialogue ended
-	if current_line_index >= current_dialogue.get("dialogues", []).size():
-		end_dialogue()
-		return
+	# If in a branch, check branch array
+	if current_branch != "":
+		var branch_dialogues = current_dialogue.get("branches", {}).get(current_branch, [])
+		if current_line_index >= branch_dialogues.size():
+			end_dialogue()
+			return
+	else:
+		# Check main dialogues array
+		if current_line_index >= current_dialogue.get("dialogues", []).size():
+			end_dialogue()
+			return
 
 	_display_current_line()
 
@@ -91,11 +102,24 @@ func select_choice(choice_index: int) -> void:
 	# Apply choice effects
 	_apply_choice_effects(choice)
 
-	# Check if choice leads to another scene
-	if "leads_to" in choice and choice["leads_to"] != null:
-		start_dialogue(choice["leads_to"])
+	# Check if choice leads to another branch or dialogue
+	if "leads_to" in choice:
+		var leads_to = choice["leads_to"]
+
+		if leads_to == null or leads_to == "":
+			# End dialogue
+			end_dialogue()
+		elif leads_to is String and current_dialogue.get("branches", {}).has(leads_to):
+			# Go to branch
+			current_branch = leads_to
+			current_line_index = 0
+			_display_current_line()
+		else:
+			# Try to load as new dialogue file
+			start_dialogue(leads_to)
 	else:
-		end_dialogue()
+		# No leads_to specified, continue to next line
+		next_line()
 
 ## Ends current dialogue
 func end_dialogue() -> void:
@@ -105,18 +129,25 @@ func end_dialogue() -> void:
 	is_active = false
 	current_dialogue.clear()
 	current_line_index = 0
+	current_branch = ""
 
 	dialogue_ended.emit()
 	EventBus.dialogue_ended.emit()
 
 ## Gets current dialogue line
 func _get_current_line() -> Dictionary:
-	var dialogues = current_dialogue.get("dialogues", [])
-
-	if current_line_index < 0 or current_line_index >= dialogues.size():
-		return {}
-
-	return dialogues[current_line_index]
+	if current_branch != "":
+		# Get from branch
+		var branch_dialogues = current_dialogue.get("branches", {}).get(current_branch, [])
+		if current_line_index < 0 or current_line_index >= branch_dialogues.size():
+			return {}
+		return branch_dialogues[current_line_index]
+	else:
+		# Get from main dialogues
+		var dialogues = current_dialogue.get("dialogues", [])
+		if current_line_index < 0 or current_line_index >= dialogues.size():
+			return {}
+		return dialogues[current_line_index]
 
 ## Displays current line
 func _display_current_line() -> void:
@@ -148,6 +179,12 @@ func _apply_choice_effects(choice: Dictionary) -> void:
 		for stat_name in choice["stat_changes"]:
 			var delta = choice["stat_changes"][stat_name]
 			GameState.modify_stat(stat_name, delta)
+
+	# Apply relationship changes
+	if "relationship_changes" in choice:
+		for npc_name in choice["relationship_changes"]:
+			var delta = choice["relationship_changes"][npc_name]
+			GameState.modify_relationship(npc_name, delta)
 
 ## Loads dialogue from JSON file
 func _load_dialogue_file(dialogue_path: String) -> Dictionary:
