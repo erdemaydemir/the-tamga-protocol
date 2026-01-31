@@ -15,7 +15,7 @@ config/description="A story-driven survival game set in 1990s Turkey. Survive 60
 config/version="0.1.0"
 config/tags=PackedStringArray("survival", "narrative", "pixel_art", "1990s", "turkey")
 run/main_scene="res://scenes/main_menu.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
