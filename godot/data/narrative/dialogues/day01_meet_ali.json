@@ -1,0 +1,116 @@
+{
+  "id": "day01_meet_ali",
+  "title": "Tanışma - Ali",
+  "location": "apartment",
+  "dialogues": [
+    {
+      "speaker": "narrator",
+      "text": "1994, İstanbul. Apartmanın kapısını açtığınızda, merdivenlerde bir adam görüyorsunuz.",
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "ali",
+      "text": "Merhaba! Sen yeni kiracı olmalısın. Ben Ali, üst katta oturuyorum.",
+      "emotion": "friendly"
+    },
+    {
+      "speaker": "narrator",
+      "text": "Ali, 30'lu yaşlarında, güler yüzlü biri. Elinizde bir paket tutuyor.",
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "ali",
+      "text": "Sana yardım edebilir miyim? Taşınmak zor iş.",
+      "emotion": "helpful"
+    },
+    {
+      "speaker": "narrator",
+      "text": "Ne yanıt veriyorsun?",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "friendly",
+          "text": "Teşekkür ederim! Yardım çok işime yarar.",
+          "leads_to": "friendly_branch",
+          "relationship_changes": {
+            "ali": 5
+          }
+        },
+        {
+          "id": "cautious",
+          "text": "İyi günler. Sanırım idare edebilirim, teşekkürler.",
+          "leads_to": "cautious_branch",
+          "relationship_changes": {
+            "ali": 2
+          }
+        },
+        {
+          "id": "suspicious",
+          "text": "Sizi tanımıyorum. Neden yardım etmek istiyorsunuz?",
+          "leads_to": "suspicious_branch",
+          "relationship_changes": {
+            "ali": -3
+          }
+        }
+      ]
+    }
+  ],
+  "branches": {
+    "friendly_branch": [
+      {
+        "speaker": "ali",
+        "text": "Harika! İstanbul'a yeni gelenlere yardım etmek benim için bir zevk.",
+        "emotion": "happy"
+      },
+      {
+        "speaker": "narrator",
+        "text": "Ali paketi taşımanıza yardım ediyor. Birkaç dakika sonra işiniz bitiyor.",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "ali",
+        "text": "Bu arada, ekonomi berbat biliyorsun. Eğer bir şeye ihtiyacın olursa, bana haber ver. Tanıdıklarım var.",
+        "emotion": "serious"
+      },
+      {
+        "speaker": "narrator",
+        "text": "Ali gülümseyerek üst kata çıkıyor. İlk gününüz sona eriyor.",
+        "emotion": "neutral"
+      }
+    ],
+    "cautious_branch": [
+      {
+        "speaker": "ali",
+        "text": "Anladım. Her neyse, ben yukarıdayım, bir şey lazım olursa.",
+        "emotion": "understanding"
+      },
+      {
+        "speaker": "narrator",
+        "text": "Ali nazikçe başını sallayıp üst kata çıkıyor.",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "narrator",
+        "text": "İlk gününüz sessizce sona eriyor.",
+        "emotion": "neutral"
+      }
+    ],
+    "suspicious_branch": [
+      {
+        "speaker": "ali",
+        "text": "Oh, üzgünüm. Sadece komşuluk yapmak istedim. İstanbul'da herkes biraz temkinli artık...",
+        "emotion": "hurt"
+      },
+      {
+        "speaker": "narrator",
+        "text": "Ali hafif bir üzüntüyle başını sallayarak uzaklaşıyor.",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "narrator",
+        "text": "Yalnız başınasınız. İlk gününüz gerilimle sona eriyor.",
+        "emotion": "tense"
+      }
+    ]
+  }
+}
