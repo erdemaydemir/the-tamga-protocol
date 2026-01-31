@@ -1,0 +1,43 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="The Tamga Protocol"
+config/description="A story-driven survival game set in 1990s Turkey. Survive 60 days, uncover the mystery of the Tamga Protocol."
+config/version="0.1.0"
+config/tags=PackedStringArray("survival", "narrative", "pixel_art", "1990s", "turkey")
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+EventBus="*res://addons/game_framework/core/autoload/EventBus.gd"
+GameState="*res://addons/game_framework/core/autoload/GameState.gd"
+SaveSystem="*res://addons/game_framework/core/autoload/SaveSystem.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_height"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/game_framework/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0

@@ -1,0 +1,367 @@
+{
+  "dialogue_id": "day01_meet_ali",
+  "title": "Meeting Ali at the Grand Bazaar",
+  "day": 1,
+  "location": "istanbul_grand_bazaar",
+  "npcs": ["ali"],
+  "description": "The player's first encounter with Ali, the friendly merchant, on Day 1 in İstanbul's Grand Bazaar.",
+
+  "dialogues": [
+    {
+      "speaker": "narrator",
+      "text": "The Grand Bazaar buzzes with life despite the economic crisis. Merchants call out prices, haggling fills the air. A friendly voice catches your attention.",
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "ali",
+      "text": "Hoş geldin, friend! You look new around here. First time in İstanbul?",
+      "emotion": "friendly",
+      "choices": [
+        {
+          "id": "friendly_response",
+          "text": "Yes, I just arrived. It's overwhelming!",
+          "flags": ["ali_first_impression_friendly"],
+          "stat_changes": {
+            "morale": 5
+          },
+          "relationship_changes": {
+            "ali": 10
+          },
+          "leads_to": "ali_intro_friendly"
+        },
+        {
+          "id": "cautious_response",
+          "text": "I'm just passing through. Who are you?",
+          "flags": ["ali_first_impression_cautious"],
+          "relationship_changes": {
+            "ali": 0
+          },
+          "leads_to": "ali_intro_cautious"
+        },
+        {
+          "id": "suspicious_response",
+          "text": "Why do you want to know?",
+          "flags": ["ali_first_impression_suspicious"],
+          "relationship_changes": {
+            "ali": -5
+          },
+          "leads_to": "ali_intro_suspicious"
+        }
+      ]
+    }
+  ],
+
+  "branches": {
+    "ali_intro_friendly": [
+      {
+        "speaker": "ali",
+        "text": "Ah, welcome! My name is Ali. I run this little stall here—carpets, ceramics, whatever keeps food on the table these days.",
+        "emotion": "warm"
+      },
+      {
+        "speaker": "ali",
+        "text": "Times are tough, kardeşim. The crisis hits everyone. But we survive, yes? We always do.",
+        "emotion": "friendly"
+      },
+      {
+        "speaker": "player",
+        "text": "[You nod, feeling a bit more at ease in this chaotic city.]",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "ali",
+        "text": "You look tired. Come, let me make you some çay. No charge—consider it a welcome gift!",
+        "emotion": "friendly",
+        "choices": [
+          {
+            "id": "accept_tea",
+            "text": "That's very kind. Thank you.",
+            "stat_changes": {
+              "health": 5,
+              "morale": 5
+            },
+            "relationship_changes": {
+              "ali": 10
+            },
+            "flags": ["accepted_ali_tea_day1"],
+            "leads_to": "ali_tea_conversation"
+          },
+          {
+            "id": "decline_tea",
+            "text": "I appreciate it, but I should keep moving.",
+            "relationship_changes": {
+              "ali": -5
+            },
+            "leads_to": "ali_goodbye_polite"
+          }
+        ]
+      }
+    ],
+
+    "ali_intro_cautious": [
+      {
+        "speaker": "ali",
+        "text": "Fair enough, fair enough. I'm Ali—just a merchant trying to make a living. Nothing more, nothing less.",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "ali",
+        "text": "If you need anything while you're here—directions, advice, a good deal on a carpet—you know where to find me.",
+        "emotion": "friendly"
+      },
+      {
+        "speaker": "player",
+        "text": "[He seems harmless enough. Maybe you were too cautious.]",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "id": "soften_up",
+            "text": "Sorry, it's been a long journey. I'm just wary of strangers.",
+            "relationship_changes": {
+              "ali": 5
+            },
+            "leads_to": "ali_understanding"
+          },
+          {
+            "id": "stay_neutral",
+            "text": "Thanks. I'll keep that in mind.",
+            "relationship_changes": {
+              "ali": 0
+            },
+            "leads_to": "ali_goodbye_neutral"
+          }
+        ]
+      }
+    ],
+
+    "ali_intro_suspicious": [
+      {
+        "speaker": "ali",
+        "text": "Whoa, easy there! No need for suspicion. Just being friendly.",
+        "emotion": "surprised"
+      },
+      {
+        "speaker": "ali",
+        "text": "Look, I get it. Times are hard, trust is rare. But not everyone's out to get you, you know?",
+        "emotion": "cautious"
+      },
+      {
+        "speaker": "player",
+        "text": "[He steps back, giving you space. Maybe you came off too harsh.]",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "id": "apologize",
+            "text": "You're right. Sorry, I've had a rough few days.",
+            "relationship_changes": {
+              "ali": 5
+            },
+            "stat_changes": {
+              "morale": -5
+            },
+            "leads_to": "ali_forgiveness"
+          },
+          {
+            "id": "stay_cold",
+            "text": "Just... keep your distance.",
+            "relationship_changes": {
+              "ali": -10
+            },
+            "leads_to": "ali_goodbye_cold"
+          }
+        ]
+      }
+    ],
+
+    "ali_tea_conversation": [
+      {
+        "speaker": "narrator",
+        "text": "Ali pours two small glasses of çay. The tea is strong, sweet, and exactly what you needed.",
+        "emotion": "neutral"
+      },
+      {
+        "speaker": "ali",
+        "text": "So, what brings you to İstanbul? Family? Work? Or are you running from something?",
+        "emotion": "curious",
+        "choices": [
+          {
+            "id": "vague_answer",
+            "text": "Just... needed a change. Fresh start.",
+            "relationship_changes": {
+              "ali": 0
+            },
+            "leads_to": "ali_respects_privacy"
+          },
+          {
+            "id": "honest_answer",
+            "text": "I'm not sure yet. Still figuring things out.",
+            "relationship_changes": {
+              "ali": 5
+            },
+            "leads_to": "ali_offers_help"
+          }
+        ]
+      }
+    ],
+
+    "ali_respects_privacy": [
+      {
+        "speaker": "ali",
+        "text": "I understand. Everyone has their reasons. İstanbul is a good place for fresh starts—if you can survive the chaos!",
+        "emotion": "friendly"
+      },
+      {
+        "speaker": "ali",
+        "text": "Listen, if you need anything—and I mean anything—come find me. The bazaar's my second home.",
+        "emotion": "warm"
+      },
+      {
+        "speaker": "player",
+        "text": "[You finish the tea. Ali's kindness is unexpected, but welcome.]",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "id": "thank_ali",
+            "text": "Thank you, Ali. I appreciate it.",
+            "relationship_changes": {
+              "ali": 5
+            },
+            "flags": ["ali_offered_help_day1"],
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_offers_help": [
+      {
+        "speaker": "ali",
+        "text": "Figuring things out—that's the story of everyone in this city right now.",
+        "emotion": "thoughtful"
+      },
+      {
+        "speaker": "ali",
+        "text": "Tell you what. I know people, I hear things. If you ever need information or help, you come to me. Deal?",
+        "emotion": "friendly"
+      },
+      {
+        "speaker": "player",
+        "text": "[There's something genuine in his offer. Maybe having a friend here wouldn't be so bad.]",
+        "emotion": "hopeful",
+        "choices": [
+          {
+            "id": "accept_help",
+            "text": "Deal. And thank you—truly.",
+            "relationship_changes": {
+              "ali": 10
+            },
+            "flags": ["ali_ally_day1", "ali_offered_help_day1"],
+            "stat_changes": {
+              "morale": 10
+            },
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_understanding": [
+      {
+        "speaker": "ali",
+        "text": "Hey, I get it. These are strange times. Being cautious is smart.",
+        "emotion": "understanding"
+      },
+      {
+        "speaker": "ali",
+        "text": "But when you're ready to trust someone, I'll be here. Take care, friend.",
+        "emotion": "friendly",
+        "choices": [
+          {
+            "id": "goodbye",
+            "text": "Thank you. Maybe I'll see you around.",
+            "relationship_changes": {
+              "ali": 5
+            },
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_forgiveness": [
+      {
+        "speaker": "ali",
+        "text": "No hard feelings. We all have rough days. İstanbul can be unforgiving if you don't have friends.",
+        "emotion": "kind"
+      },
+      {
+        "speaker": "ali",
+        "text": "Consider me a friend—if you'll have me. Come by anytime.",
+        "emotion": "friendly",
+        "choices": [
+          {
+            "id": "accept_friendship",
+            "text": "I'd like that. Thank you, Ali.",
+            "relationship_changes": {
+              "ali": 10
+            },
+            "flags": ["ali_offered_help_day1"],
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_goodbye_polite": [
+      {
+        "speaker": "ali",
+        "text": "Of course, of course. Don't let me keep you. But remember—Ali's Stall, Grand Bazaar. You need me, I'm here.",
+        "emotion": "friendly",
+        "choices": [
+          {
+            "id": "thank_and_leave",
+            "text": "I'll remember that. Take care.",
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_goodbye_neutral": [
+      {
+        "speaker": "ali",
+        "text": "Good luck out there. İstanbul's big and loud, but you'll find your way.",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "id": "leave",
+            "text": "[Nod and walk away]",
+            "leads_to": null
+          }
+        ]
+      }
+    ],
+
+    "ali_goodbye_cold": [
+      {
+        "speaker": "ali",
+        "text": "Alright, alright. I'll leave you be. Good luck—you'll need it.",
+        "emotion": "disappointed",
+        "choices": [
+          {
+            "id": "leave_coldly",
+            "text": "[Turn and walk away without a word]",
+            "leads_to": null
+          }
+        ]
+      }
+    ]
+  },
+
+  "metadata": {
+    "created": "2026-01-31",
+    "author": "Initial Template",
+    "validation_score": null,
+    "notes": "First meeting with Ali. Establishes player's approach to relationships and sets tone for trust vs. suspicion theme."
+  }
+}

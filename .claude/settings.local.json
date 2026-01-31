@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(git init:*)",
+      "Bash(git submodule add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(cmd /c \"mklink /D framework E:\\dev\\godot-game-framework\\godot\\addons\\game_framework\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "event_schema_version": "1.0",
+  "description": "Daily event definitions for The Tamga Protocol. Events are triggered based on day number, flags, and other conditions.",
+
+  "events": [
+    {
+      "event_id": "day01_arrival",
+      "title": "Arrival in İstanbul",
+      "day_trigger": 1,
+      "required_flags": [],
+      "excluded_flags": [],
+      "location": "istanbul_apartment",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "narration": "You arrive in İstanbul on a gray morning. The city stretches before you—chaotic, alive, overwhelming. Your small apartment is in the old quarter, cramped but affordable. This is home now. For the next 60 days, at least.",
+        "stat_changes": {
+          "health": 0,
+          "morale": -5
+        },
+        "flags_set": ["arrived_istanbul"],
+        "unlocks_locations": ["istanbul_grand_bazaar", "istanbul_apartment", "istanbul_cafe"]
+      }
+    },
+
+    {
+      "event_id": "day01_meet_ali",
+      "title": "Meeting Ali",
+      "day_trigger": 1,
+      "required_flags": ["arrived_istanbul"],
+      "excluded_flags": [],
+      "location": "istanbul_grand_bazaar",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "dialogue_file": "day01_meet_ali.json",
+        "unlocks_npc": "ali"
+      }
+    },
+
+    {
+      "event_id": "day03_news_crisis",
+      "title": "Economic News Broadcast",
+      "day_trigger": 3,
+      "required_flags": [],
+      "excluded_flags": [],
+      "location": "istanbul_apartment",
+      "type": "environmental",
+      "priority": "normal",
+
+      "content": {
+        "narration": "The evening news crackles from your neighbor's TV. \"...inflation reaches new heights... government officials decline to comment... citizens urged to remain calm...\" The crisis is real. You feel it in your bones.",
+        "stat_changes": {
+          "morale": -10
+        },
+        "flags_set": ["heard_crisis_news_day3"]
+      }
+    },
+
+    {
+      "event_id": "day07_protocol_mention",
+      "title": "Overhear 'Protocol' Mention",
+      "day_trigger": 7,
+      "day_range": [7, 10],
+      "required_flags": ["ali_offered_help_day1"],
+      "excluded_flags": ["knows_about_protocol"],
+      "location": "istanbul_cafe",
+      "type": "conditional",
+      "priority": "high",
+
+      "content": {
+        "narration": "While sipping çay at the café, you overhear two men in suits at the next table. One mentions something about a 'protocol'—classified, urgent. They lower their voices when they notice you. The word sticks in your mind.",
+        "stat_changes": {
+          "morale": 5
+        },
+        "flags_set": ["overheard_protocol_mention"],
+        "unlocks_dialogue_options": {
+          "ali": ["ask_about_protocol"]
+        }
+      }
+    },
+
+    {
+      "event_id": "day10_zeynep_meet",
+      "title": "Meeting Zeynep at University",
+      "day_trigger": 10,
+      "day_range": [10, 15],
+      "required_flags": [],
+      "excluded_flags": ["met_zeynep"],
+      "location": "istanbul_university",
+      "type": "conditional",
+      "priority": "high",
+
+      "content": {
+        "dialogue_file": "day10_meet_zeynep.json",
+        "unlocks_npc": "zeynep",
+        "flags_set": ["met_zeynep"],
+        "relationship_changes": {
+          "zeynep": 10
+        }
+      }
+    },
+
+    {
+      "event_id": "day15_first_choice",
+      "title": "Trust Ali or Investigate Alone?",
+      "day_trigger": 15,
+      "required_flags": ["overheard_protocol_mention", "met_zeynep"],
+      "excluded_flags": [],
+      "location": "istanbul_grand_bazaar",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "dialogue_file": "day15_critical_choice.json",
+        "description": "Major branching point: Player chooses to trust Ali with their suspicions or investigate the protocol alone.",
+        "branches": {
+          "trust_ali": {
+            "flags_set": ["trusts_ali_day15"],
+            "relationship_changes": {"ali": 20}
+          },
+          "investigate_alone": {
+            "flags_set": ["lone_wolf_day15"],
+            "relationship_changes": {"ali": -10}
+          }
+        }
+      }
+    },
+
+    {
+      "event_id": "day22_bookstore_tamga",
+      "title": "Discover Tamga Symbol at Bookstore",
+      "day_trigger": 22,
+      "day_range": [22, 30],
+      "required_flags": ["visited_ankara"],
+      "excluded_flags": ["found_tamga_symbol_1"],
+      "location": "ankara_bookstore",
+      "type": "clue",
+      "priority": "high",
+
+      "content": {
+        "narration": "While browsing old books in the dusty Ankara bookstore, you notice something carved into the wooden shelf—a strange symbol. Ancient. Weathered. It looks almost... runic. The shopkeeper says it's been there 'since before his time.'",
+        "clues_discovered": ["tamga_symbol_bookstore"],
+        "stat_changes": {
+          "morale": 10
+        },
+        "flags_set": ["found_tamga_symbol_1", "easter_egg_1_found"],
+        "unlocks_dialogue_options": {
+          "zeynep": ["ask_about_tamga_symbol"],
+          "ayse": ["show_tamga_photo"]
+        }
+      }
+    },
+
+    {
+      "event_id": "day30_protocol_fragment",
+      "title": "Discover Protocol Document Fragment",
+      "day_trigger": 30,
+      "required_flags": ["visited_ankara", "met_mehmet"],
+      "excluded_flags": [],
+      "location": "ankara_bookstore",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "dialogue_file": "day30_protocol_discovery.json",
+        "clues_discovered": ["protocol_fragment_document"],
+        "stat_changes": {
+          "morale": 15
+        },
+        "flags_set": ["knows_about_protocol", "major_clue_discovered"],
+        "description": "Player discovers a fragment of the Tamga Protocol document—the first concrete evidence it exists."
+      }
+    },
+
+    {
+      "event_id": "random_encounter_friend",
+      "title": "Encounter Old Acquaintance",
+      "day_trigger": null,
+      "day_range": [10, 50],
+      "required_flags": [],
+      "excluded_flags": [],
+      "location": "any",
+      "type": "random",
+      "priority": "low",
+      "probability": 0.15,
+
+      "content": {
+        "narration": "You bump into someone you vaguely recognize from years ago. They're doing well, despite the crisis. The brief conversation lifts your spirits.",
+        "stat_changes": {
+          "morale": 5,
+          "health": 0
+        }
+      }
+    },
+
+    {
+      "event_id": "random_health_issue",
+      "title": "Feel Unwell",
+      "day_trigger": null,
+      "day_range": [5, 55],
+      "required_flags": [],
+      "excluded_flags": [],
+      "location": "any",
+      "type": "random",
+      "priority": "low",
+      "probability": 0.10,
+
+      "content": {
+        "narration": "You wake up feeling unwell—a headache, fatigue. The stress of the crisis is taking its toll.",
+        "stat_changes": {
+          "health": -15,
+          "morale": -5
+        },
+        "choices": [
+          {
+            "id": "rest_today",
+            "text": "Skip today's activities and rest.",
+            "stat_changes": {"health": 10, "morale": -5}
+          },
+          {
+            "id": "push_through",
+            "text": "Push through the pain. You have things to do.",
+            "stat_changes": {"health": -5, "morale": 5}
+          }
+        ]
+      }
+    },
+
+    {
+      "event_id": "day58_final_choice",
+      "title": "The Final Decision",
+      "day_trigger": 58,
+      "required_flags": ["knows_about_protocol"],
+      "excluded_flags": [],
+      "location": "istanbul_apartment",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "dialogue_file": "day58_final_choice.json",
+        "description": "The player makes their final choice: expose the protocol, protect it, or walk away. This locks the ending path.",
+        "branches": {
+          "expose_protocol": {
+            "flags_set": ["decided_to_expose"],
+            "excluded_endings": ["the_keeper", "the_collaborator"]
+          },
+          "protect_protocol": {
+            "flags_set": ["decided_to_protect"],
+            "excluded_endings": ["the_whistleblower", "the_martyr"]
+          },
+          "walk_away": {
+            "flags_set": ["decided_to_walk_away"],
+            "excluded_endings": ["the_whistleblower", "the_keeper"]
+          }
+        }
+      }
+    },
+
+    {
+      "event_id": "day60_ending_trigger",
+      "title": "Day 60 - Ending Sequence",
+      "day_trigger": 60,
+      "required_flags": [],
+      "excluded_flags": [],
+      "location": "any",
+      "type": "story",
+      "priority": "mandatory",
+
+      "content": {
+        "description": "Final day. The game calculates the ending based on flags, relationships, and clues discovered. Ending sequence begins.",
+        "ending_calculation": true
+      }
+    }
+  ],
+
+  "metadata": {
+    "total_events": 13,
+    "story_events": 7,
+    "conditional_events": 3,
+    "random_events": 2,
+    "clue_events": 1,
+    "created": "2026-01-31",
+    "notes": "Example event structure. Full game will have 80-100+ events across 60 days."
+  }
+}
